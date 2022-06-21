@@ -1,14 +1,20 @@
 package se.lexicon.dreas94.jpaassignment.entity;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.util.Objects;
-import java.util.Set;
+import java.util.UUID;
 
 @Entity
 public class RecipeIngredient
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id", updatable = false, nullable = false)
+    @Type(type = "org.hibernate.type.UUIDCharType")
     private String id;
 
     @ManyToOne
@@ -25,14 +31,27 @@ public class RecipeIngredient
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
-    public void setId(String id)
+    public RecipeIngredient()
     {
-        this.id = id;
+
+    }
+
+    public RecipeIngredient(Ingredient ingredient, double amount, Measurement measurement, Recipe recipe)
+    {
+        this.ingredient = ingredient;
+        this.amount = amount;
+        this.measurement = measurement;
+        this.recipe = recipe;
     }
 
     public String getId()
     {
         return id;
+    }
+
+    public void setId(UUID id)
+    {
+        this.id = String.valueOf(id);
     }
 
     public Ingredient getIngredient()

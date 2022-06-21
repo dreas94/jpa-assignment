@@ -10,8 +10,18 @@ public class Ingredient
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     private String name;
+
+    public Ingredient()
+    {
+
+    }
+
+    public Ingredient(String name)
+    {
+        this.name = name;
+    }
 
     public int getId()
     {
@@ -46,14 +56,5 @@ public class Ingredient
     public int hashCode()
     {
         return Objects.hash(getId(), getName());
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Ingredient{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
     }
 }
