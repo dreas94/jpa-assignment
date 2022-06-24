@@ -21,7 +21,7 @@ public class Recipe
     )
     private List<RecipeIngredient> recipeIngredients;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "instruction_id")
     private RecipeInstruction recipeInstruction;
 
@@ -124,7 +124,7 @@ public class Recipe
     {
         if(category == null) throw new IllegalArgumentException("category data is null");
         if(categories == null) categories = new HashSet<>();
-        if(category.getRecipe() == null) category.setRecipe(new HashSet<>());
+        if(category.getRecipes() == null) category.setRecipes(new HashSet<>());
 
         if(!categories.contains(category))
         {
@@ -136,11 +136,11 @@ public class Recipe
     {
         if(category == null) throw new IllegalArgumentException("category data is null");
         if(categories == null) categories = new HashSet<>();
-        if(category.getRecipe() == null) category.setRecipe(new HashSet<>());
+        if(category.getRecipes() == null) category.setRecipes(new HashSet<>());
 
-        if(!categories.contains(category))
+        if(categories.contains(category))
         {
-            categories.add(category);
+            categories.remove(category);
         }
     }
 
@@ -165,7 +165,6 @@ public class Recipe
         return "Recipe{" +
                 "id=" + id +
                 ", recipeName='" + recipeName + '\'' +
-                ", recipeIngredients=" + recipeIngredients +
                 ", recipeInstruction=" + recipeInstruction +
                 '}';
     }

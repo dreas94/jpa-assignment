@@ -14,7 +14,6 @@ public class RecipeIngredient
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", updatable = false, nullable = false)
-    @Type(type = "org.hibernate.type.UUIDCharType")
     private String id;
 
     @ManyToOne
@@ -27,7 +26,7 @@ public class RecipeIngredient
     @Column(nullable = false)
     private Measurement measurement;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
@@ -114,10 +113,8 @@ public class RecipeIngredient
     {
         return "RecipeIngredient{" +
                 "id='" + id + '\'' +
-                ", ingredient=" + ingredient +
                 ", amount=" + amount +
                 ", measurement=" + measurement +
-                ", recipe=" + recipe +
                 '}';
     }
 }

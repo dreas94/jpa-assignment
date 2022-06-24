@@ -12,8 +12,8 @@ public class Category
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
-    String category;
+    @Column(nullable = false, unique = true)
+    String name;
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.REFRESH}, mappedBy = "categories")
     private Set<Recipe> recipes;
@@ -23,9 +23,9 @@ public class Category
 
     }
 
-    public Category(String category)
+    public Category(String name)
     {
-        this.category = category;
+        this.name = name;
     }
 
     public int getId()
@@ -38,22 +38,22 @@ public class Category
         this.id = id;
     }
 
-    public String getCategory()
+    public String getName()
     {
-        return category;
+        return name;
     }
 
-    public void setCategory(String category)
+    public void setName(String name)
     {
-        this.category = category;
+        this.name = name;
     }
 
-    public Set<Recipe> getRecipe()
+    public Set<Recipe> getRecipes()
     {
         return recipes;
     }
 
-    public void setRecipe(Set<Recipe> recipes)
+    public void setRecipes(Set<Recipe> recipes)
     {
         this.recipes = recipes;
     }
@@ -72,13 +72,13 @@ public class Category
 
     public void removeRecipe(Recipe recipe)
     {
-        if(category == null) throw new IllegalArgumentException("recipe data is null");
+        if(recipe == null) throw new IllegalArgumentException("recipe data is null");
         if(recipes == null) recipes = new HashSet<>();
         if(recipe.getCategories() == null) recipe.setCategories(new HashSet<>());
 
-        if(!recipes.contains(recipe))
+        if(recipes.contains(recipe))
         {
-            recipes.add(recipe);
+            recipes.remove(recipe);
         }
     }
 
@@ -88,13 +88,13 @@ public class Category
         if (this == o) return true;
         if (!(o instanceof Category)) return false;
         Category category1 = (Category) o;
-        return getId() == category1.getId() && getCategory().equals(category1.getCategory());
+        return getId() == category1.getId() && getName().equals(category1.getName());
     }
 
     @Override
     public int hashCode()
     {
-        return Objects.hash(getId(), getCategory());
+        return Objects.hash(getId(), getName());
     }
 
     @Override
@@ -102,7 +102,7 @@ public class Category
     {
         return "Category{" +
                 "id=" + id +
-                ", category='" + category +
+                ", name='" + name +
                 '}';
     }
 }
