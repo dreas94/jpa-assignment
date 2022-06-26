@@ -5,16 +5,14 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@Entity
+@Entity(name = "category")
 public class Category
 {
+    @Column(nullable = false, unique = true)
+    String name;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(nullable = false, unique = true)
-    String name;
-
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.REFRESH}, mappedBy = "categories")
     private Set<Recipe> recipes;
 
@@ -60,26 +58,20 @@ public class Category
 
     public void addRecipe(Recipe recipe)
     {
-        if(recipe == null) throw new IllegalArgumentException("recipe data is null");
-        if(recipes == null) recipes = new HashSet<>();
-        if(recipe.getCategories() == null) recipe.setCategories(new HashSet<>());
+        if (recipe == null) throw new IllegalArgumentException("recipe data is null");
+        if (recipes == null) recipes = new HashSet<>();
+        if (recipe.getCategories() == null) recipe.setCategories(new HashSet<>());
 
-        if(!recipes.contains(recipe))
-        {
-            recipes.add(recipe);
-        }
+        recipes.add(recipe);
     }
 
     public void removeRecipe(Recipe recipe)
     {
-        if(recipe == null) throw new IllegalArgumentException("recipe data is null");
-        if(recipes == null) recipes = new HashSet<>();
-        if(recipe.getCategories() == null) recipe.setCategories(new HashSet<>());
+        if (recipe == null) throw new IllegalArgumentException("recipe data is null");
+        if (recipes == null) recipes = new HashSet<>();
+        if (recipe.getCategories() == null) recipe.setCategories(new HashSet<>());
 
-        if(recipes.contains(recipe))
-        {
-            recipes.remove(recipe);
-        }
+        recipes.remove(recipe);
     }
 
     @Override

@@ -3,15 +3,14 @@ package se.lexicon.dreas94.jpaassignment.entity;
 import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
+@Entity(name = "recipe_instruction")
 public class RecipeInstruction
 {
+    @Column(nullable = false, length = 1500)
+    String instructions;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(nullable = false, length = 1500)
-    String instructions;
 
     public RecipeInstruction()
     {
