@@ -1,13 +1,12 @@
 package se.lexicon.dreas94.jpaassignment.entity;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.UUID;
 
-@Entity
+@Entity(name = "recipe_ingredient")
 public class RecipeIngredient
 {
     @Id
@@ -16,7 +15,7 @@ public class RecipeIngredient
     @Column(name = "id", updatable = false, nullable = false)
     private String id;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "ingredient_id")
     private Ingredient ingredient;
 
@@ -35,11 +34,16 @@ public class RecipeIngredient
 
     }
 
-    public RecipeIngredient(Ingredient ingredient, double amount, Measurement measurement, Recipe recipe)
+    public RecipeIngredient(Ingredient ingredient, double amount, Measurement measurement)
     {
         this.ingredient = ingredient;
         this.amount = amount;
         this.measurement = measurement;
+    }
+
+    public RecipeIngredient(Ingredient ingredient, double amount, Measurement measurement, Recipe recipe)
+    {
+        this(ingredient, amount, measurement);
         this.recipe = recipe;
     }
 

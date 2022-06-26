@@ -10,11 +10,12 @@ public enum Measurement
     ML("Milliliter"),
     CL("Centiliter"),
     DL("Deciliter"),
-    L("Liter");
+    L("Liter"),
+    NO("Number of");
 
     private String description;
 
-    Measurement( )
+    Measurement()
     {
     }
 

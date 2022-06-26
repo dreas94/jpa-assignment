@@ -10,21 +10,22 @@ import java.util.List;
 public interface RecipeRepository extends CrudRepository<Recipe, Integer>
 {
     List<Recipe> findByRecipeNameContaining(String name);
+
     @Query("SELECT recipe " +
-            "FROM Recipe recipe " +
+            "FROM recipe recipe " +
             "JOIN FETCH recipe.recipeIngredients recipeIngredient " +
             "WHERE recipeIngredient.ingredient.name = :ingredientName")
     List<Recipe> findRecipesByIngredientName(@Param("ingredientName") String ingredientName);
 
     @Query("SELECT recipe " +
-            "FROM Recipe recipe " +
+            "FROM recipe recipe " +
             "JOIN FETCH recipe.categories category " +
             "WHERE category.name = :categoryName")
     List<Recipe> findRecipesByCategoryName(@Param("categoryName") String categoryName);
 
-    @Query("SELECT recipe " +
-            "FROM Recipe recipe " +
+    @Query("SELECT DISTINCT recipe " +
+            "FROM recipe recipe " +
             "JOIN FETCH recipe.categories category " +
             "WHERE category.name IN :categoryNames")
-    List<Recipe> findRecipesByCategoryName(@Param("categoryNames") List<String> categoryNames);
+    List<Recipe> findRecipesByCategoryNames(@Param("categoryNames") List<String> categoryNames);
 }

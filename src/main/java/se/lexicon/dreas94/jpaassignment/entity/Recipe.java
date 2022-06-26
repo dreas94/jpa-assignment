@@ -3,7 +3,7 @@ package se.lexicon.dreas94.jpaassignment.entity;
 import javax.persistence.*;
 import java.util.*;
 
-@Entity
+@Entity(name = "recipe")
 public class Recipe
 {
     @Id
@@ -27,8 +27,8 @@ public class Recipe
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "recipe_category"
-            ,joinColumns = {@JoinColumn(name = "recipe_id", referencedColumnName = "id")}
-            ,inverseJoinColumns = {@JoinColumn(name = "recipe_category_id", referencedColumnName = "id")})
+            , joinColumns = {@JoinColumn(name = "recipe_id", referencedColumnName = "id")}
+            , inverseJoinColumns = {@JoinColumn(name = "recipe_category_id", referencedColumnName = "id")})
     private Set<Category> categories;
 
     public Recipe()
@@ -36,11 +36,16 @@ public class Recipe
 
     }
 
-    public Recipe(String recipeName, List<RecipeIngredient> recipeIngredients, RecipeInstruction recipeInstruction, Set<Category> categories)
+    public Recipe(String recipeName, RecipeInstruction recipeInstruction)
     {
         this.recipeName = recipeName;
-        this.recipeIngredients = recipeIngredients;
         this.recipeInstruction = recipeInstruction;
+    }
+
+    public Recipe(String recipeName, List<RecipeIngredient> recipeIngredients, RecipeInstruction recipeInstruction, Set<Category> categories)
+    {
+        this(recipeName, recipeInstruction);
+        this.recipeIngredients = recipeIngredients;
         this.categories = categories;
     }
 
@@ -96,11 +101,11 @@ public class Recipe
 
     public void addRecipeIngredient(RecipeIngredient recipeIngredient)
     {
-        if(recipeIngredient == null) throw new IllegalArgumentException("recipeIngredient data is null");
-        if(recipeIngredients == null) recipeIngredients = new ArrayList<>();
-        if(recipeIngredient.getRecipe() == null) recipeIngredient.setRecipe(new Recipe());
+        if (recipeIngredient == null) throw new IllegalArgumentException("recipeIngredient data is null");
+        if (recipeIngredients == null) recipeIngredients = new ArrayList<>();
+        if (recipeIngredient.getRecipe() == null) recipeIngredient.setRecipe(new Recipe());
 
-        if(!recipeIngredients.contains(recipeIngredient) && recipeIngredient.getRecipe() != this)
+        if (!recipeIngredients.contains(recipeIngredient) && recipeIngredient.getRecipe() != this)
         {
             recipeIngredients.add(recipeIngredient);
             recipeIngredient.setRecipe(this);
@@ -109,39 +114,33 @@ public class Recipe
 
     public void removeRecipeIngredient(RecipeIngredient recipeIngredient)
     {
-        if(recipeIngredient == null) throw new IllegalArgumentException("recipeIngredient data is null");
-        if(recipeIngredients == null) recipeIngredients = new ArrayList<>();
-        if(recipeIngredient.getRecipe() == null) recipeIngredient.setRecipe(new Recipe());
+        if (recipeIngredient == null) throw new IllegalArgumentException("recipeIngredient data is null");
+        if (recipeIngredients == null) recipeIngredients = new ArrayList<>();
+        if (recipeIngredient.getRecipe() == null) recipeIngredient.setRecipe(new Recipe());
 
-        if(recipeIngredients.contains(recipeIngredient) && recipeIngredient.getRecipe() == this)
+        if (recipeIngredients.contains(recipeIngredient) && recipeIngredient.getRecipe() == this)
         {
             recipeIngredient.setRecipe(null);
-            recipeIngredients.add(recipeIngredient);
+            recipeIngredients.remove(recipeIngredient);
         }
     }
 
     public void addCategory(Category category)
     {
-        if(category == null) throw new IllegalArgumentException("category data is null");
-        if(categories == null) categories = new HashSet<>();
-        if(category.getRecipes() == null) category.setRecipes(new HashSet<>());
+        if (category == null) throw new IllegalArgumentException("category data is null");
+        if (categories == null) categories = new HashSet<>();
+        if (category.getRecipes() == null) category.setRecipes(new HashSet<>());
 
-        if(!categories.contains(category))
-        {
-            categories.add(category);
-        }
+        categories.add(category);
     }
 
     public void removeCategory(Category category)
     {
-        if(category == null) throw new IllegalArgumentException("category data is null");
-        if(categories == null) categories = new HashSet<>();
-        if(category.getRecipes() == null) category.setRecipes(new HashSet<>());
+        if (category == null) throw new IllegalArgumentException("category data is null");
+        if (categories == null) categories = new HashSet<>();
+        if (category.getRecipes() == null) category.setRecipes(new HashSet<>());
 
-        if(categories.contains(category))
-        {
-            categories.remove(category);
-        }
+        categories.remove(category);
     }
 
     @Override

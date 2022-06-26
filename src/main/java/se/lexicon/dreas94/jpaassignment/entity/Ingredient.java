@@ -3,7 +3,7 @@ package se.lexicon.dreas94.jpaassignment.entity;
 import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
+@Entity(name = "ingredient")
 public class Ingredient
 {
     @Id
@@ -20,6 +20,12 @@ public class Ingredient
 
     public Ingredient(String name)
     {
+        this.name = name;
+    }
+
+    public Ingredient(int id, String name)
+    {
+        this.id = id;
         this.name = name;
     }
 
