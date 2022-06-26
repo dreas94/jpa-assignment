@@ -15,10 +15,6 @@ public enum Measurement
 
     private String description;
 
-    Measurement()
-    {
-    }
-
     Measurement(String description)
     {
         this.description = description;
